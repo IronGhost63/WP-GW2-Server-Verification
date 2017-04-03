@@ -79,6 +79,8 @@ function sb_server_verification(){
 
 		wp_send_json_success( $response );
 	}else{
+		$user = new WP_User($user_id);
+		$user->remove_cap("citizen_nsp");
 		$response = array(
 			'message' => __("You are not ".$gw2server[$home]." citizen."),
 			'server' => $gw2server[$json['world']]
