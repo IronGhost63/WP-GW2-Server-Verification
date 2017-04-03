@@ -18,6 +18,7 @@ add_action('wp_login', 'sb_end_session');
 add_action('wp_ajax_gw2verification', 'sb_server_verification');
 
 add_shortcode('gw2form', 'sb_shortcode_verification_form');
+add_shortcode('gw2form-test', 'sb_shortcode_cap_test');
 
 function sb_start_session() {
 	if(!session_id()) {
@@ -132,6 +133,23 @@ function sb_shortcode_verification_form(){
 		$return .= '<span class="warning">'. __("Please login before verify server.") .'</span>';
 	}
 	$return .= "</div>";
+
+	return $return;
+}
+
+function sb_shortcode_cap_test(){
+	global $gw2server;
+	$home = get_option("home_server", "1018");
+	if(current_user_can( 'citizen_nsp' )){
+		$message = "You are verified as ".$gw2server[$home]." citizen";
+	}else{
+		$message = "Yop are not ".$gw2server[$home]." citizen!";
+	}
+
+	$return = '<div id="gw2-capability-test">';
+	$return .= '<p class="message">Capability test</p>';
+	$return .= '<h2>'.$message.'</h2>';
+	$return .= '</div>';
 
 	return $return;
 }
